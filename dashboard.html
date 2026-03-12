@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HEALGEN | Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<nav>
+  <div class="logo">HEALGEN</div>
+  <button onclick="logout()">Logout</button>
+</nav>
+
+<section class="dashboard">
+  <div class="card" onclick="goAnalyze()">
+    <h3>🩺 Health Analysis</h3>
+    <p>Check BMI, glucose, cholesterol & risk</p>
+  </div>
+
+  <div class="card">
+    <h3>🍎 Diet Intelligence</h3>
+    <p>Personalized meal recommendations</p>
+  </div>
+
+  <div class="card">
+    <h3>📊 Reports</h3>
+    <p>Track improvements (future scope)</p>
+  </div>
+</section>
+
+<script src="app.js"></script>
+</body>
+</html>

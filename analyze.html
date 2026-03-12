@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HEALGEN – Smart Health Advisor</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+body{background:#fff6ee;color:#333}
+
+/* NAVBAR */
+nav{
+display:flex;justify-content:space-between;align-items:center;
+padding:15px 50px;background:#fff;
+box-shadow:0 4px 10px rgba(0,0,0,.05)}
+.logo{font-size:22px;font-weight:700;color:#ff8c42}
+
+/* HERO */
+.hero{padding:40px}
+.hero h1{font-size:42px}
+.hero span{color:#ff8c42}
+
+/* SECTION */
+.section{
+max-width:1000px;margin:40px auto;background:#fff;
+padding:40px;border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,.1)}
+.section h2{text-align:center;color:#ff8c42;margin-bottom:25px}
+
+/* FORM */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+input,select{
+padding:12px;border-radius:12px;border:1px solid #ddd;width:100%}
+.full{grid-column:1/3}
+button{
+grid-column:1/3;padding:16px;border:none;border-radius:30px;
+background:linear-gradient(90deg,#ff944d,#ffb347);
+color:white;font-size:18px;cursor:pointer}
+
+/* RESULT */
+.result{
+display:none;margin-top:30px;
+background:#fffaf4;padding:25px;border-radius:15px}
+.badge{
+display:inline-block;padding:8px 16px;
+border-radius:20px;color:white;font-weight:600}
+
+/* CARDS */
+.card{
+background:#fff;padding:18px;
+border-radius:15px;margin-top:15px}
+.card h4{color:#ff8c42;margin-bottom:6px}
+
+ul{margin-left:20px;margin-top:10px}
+li{margin-bottom:6px}
+
+/* INFO */
+.info{
+margin-top:40px;
+background:#fff;
+padding:30px;
+border-radius:18px;
+box-shadow:0 10px 25px rgba(0,0,0,.08)
+}
+.info h3{color:#ff8c42;margin-bottom:15px}
+.info p{margin-bottom:10px}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">HEALGEN</div>
+</nav>
+
+<section class="hero">
+<h1><span>Detect Early.</span> Explain Clearly.<br><span>Empower Daily.</span></h1>
+</section>
+
+<section class="section">
+<h2>Health Parameter Input</h2>
+
+<div class="grid">
+
+<input id="age" type="number" placeholder="Age (years)">
+<select id="gender">
+  <option value="">Gender</option>
+  <option>Male</option>
+  <option>Female</option>
+</select>
+
+<input id="weight" type="number" placeholder="Weight (kg)">
+<input id="height" type="number" placeholder="Height (cm)">
+
+<input id="bp" placeholder="Blood Pressure (120/80)">
+<input id="heart" type="number" placeholder="Heart Rate (bpm)">
+
+<select id="smoke">
+  <option value="">Smoking Habit</option>
+  <option>Non-Smoker</option>
+  <option>Occasional</option>
+  <option>Regular</option>
+</select>
+
+<select id="diabetes">
+  <option value="">Diabetes</option>
+  <option>No</option>
+  <option>Yes</option>
+</select>
+
+<select id="stroke">
+  <option value="">Prevalent Stroke</option>
+  <option>No</option>
+  <option>Yes</option>
+</select>
+
+<select id="hyper">
+  <option value="">Hypertension</option>
+  <option>No</option>
+  <option>Yes</option>
+</select>
+
+<input id="chol" type="number" placeholder="Total Cholesterol (mg/dL)">
+<input id="glucose" type="number" placeholder="Glucose (mg/dL)">
+<input id="hba1c" type="number" step="0.1" placeholder="HbA1c (%)">
+
+<select id="food">
+  <option value="">Insulin Resistant Food Habit</option>
+  <option>Low</option>
+  <option>Moderate</option>
+  <option>High</option>
+</select>
+
+<select id="sleep">
+  <option value="">Sleep Duration</option>
+  <option value="<6">&lt; 6 hrs</option>
+  <option value="6-8">6–8 hrs</option>
+  <option value=">8">&gt; 8 hrs</option>
+</select>
+
+<select id="exercise" class="full">
+  <option value="">Exercise Frequency</option>
+  <option value="0">None</option>
+  <option value="1">Light</option>
+  <option value="2">Moderate</option>
+  <option value="3">Intense</option>
+</select>
+
+<button onclick="analyze()">Analyze & Generate Plan</button>
+</div>
+
+<!-- RESULT -->
+<div id="result" class="result">
+<h3>Health Summary</h3>
+<p><b>BMI:</b> <span id="bmi"></span></p>
+<p><b>Risk Level:</b> <span id="risk" class="badge"></span></p>
+
+<div class="card">
+  <h4>📌 Why this Risk Level?</h4>
+<p><b>Risk Level:</b> <span id="risk" class="badge"></span></p>
+
+<div style="margin-top:10px;background:#eee;border-radius:20px;height:18px;width:100%">
+<div id="riskBar" style="
+height:18px;
+width:0%;
+border-radius:20px;
+background:linear-gradient(90deg,#4CAF50,#ff9800,#e53935);
+transition:width 0.5s;">
+</div>
+</div>
+  <ul id="riskReason"></ul>
+</div>
+
+<div class="card">
+  <h4>🥗 Complete Daily Diet Plan</h4>
+  <p id="dietPlan"></p>
+</div>
+</div>
+
+<!-- EDUCATION -->
+<div class="info">
+<h3>Understanding Health Parameters & Safe Ranges</h3>
+
+<p><b>BMI:</b> Ideal 18.5–24.9 | ≥25 increases heart strain</p>
+<p><b>Cholesterol:</b> &lt;200 normal | ≥240 high risk</p>
+<p><b>Glucose:</b> &lt;100 normal | ≥126 diabetes</p>
+<p><b>HbA1c:</b> &lt;5.7 normal | ≥6.5 diabetes</p>
+<p><b>Blood Pressure:</b> &lt;120/80 normal | ≥140/90 high risk</p>
+<p><b>Sleep:</b> 6–8 hrs optimal</p>
+<p><b>Exercise:</b> ≥30 mins/day protective for heart</p>
+<p><b>Smoking:</b> Increases heart attack risk 2–4x</p>
+
+<p><b>Key Insight:</b> Heart risk increases when multiple factors coexist — not from a single parameter.</p>
+</div>
+
+</section>
+
+<script>
+
+
+
+async function analyze(){
+
+let age = Number(document.getElementById("age").value);
+let weight = Number(document.getElementById("weight").value);
+let height = Number(document.getElementById("height").value)/100;
+let chol = Number(document.getElementById("chol").value);
+let glucose = Number(document.getElementById("glucose").value);
+let hba1c = Number(document.getElementById("hba1c").value);
+let heart = Number(document.getElementById("heart").value);
+
+let smoke = document.getElementById("smoke").value;
+let diabetes = document.getElementById("diabetes").value;
+let hyper = document.getElementById("hyper").value;
+let stroke = document.getElementById("stroke").value;
+let sleep = document.getElementById("sleep").value;
+let food = document.getElementById("food").value;
+
+if(!age || !weight || !height || !chol || !glucose || !hba1c){
+alert("Please fill required values");
+return;
+}
+
+/* BMI Calculation */
+
+let bmi = (weight/(height*height)).toFixed(1);
+document.getElementById("bmi").innerText = bmi;
+
+/* Data sent to ML model */
+
+let data = {
+
+age: age,
+currentSmoker: smoke==="Regular"?1:0,
+prevalentStroke: stroke==="Yes"?1:0,
+prevalentHyp: hyper==="Yes"?1:0,
+diabetes: diabetes==="Yes"?1:0,
+totChol: chol,
+sysBP: 120,
+diaBP: 80,
+BMI: parseFloat(bmi),
+heartRate: heart,
+glucose: glucose
+
+};
+
+try{
+
+let response = await fetch("http://127.0.0.1:5000/predict",{
+
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body: JSON.stringify(data)
+
+});
+
+let result = await response.json();
+
+let risk = document.getElementById("risk");
+let prob = result.risk_probability * 100;
+
+/* Risk Meter */
+
+document.getElementById("riskBar").style.width = prob + "%";
+
+/* Risk Level Display */
+
+
+if(prob < 40){
+
+risk.innerText = "Low Risk ("+prob.toFixed(1)+"%)";
+risk.style.background="#4CAF50";
+
+}
+else if(prob < 70){
+
+risk.innerText = "Moderate Risk ("+prob.toFixed(1)+"%)";
+risk.style.background="#ff9800";
+
+}
+else{
+
+risk.innerText = "High Risk ("+prob.toFixed(1)+"%)";
+risk.style.background="#e53935";
+
+}
+
+/* WHY THIS RISK */
+
+let reasons = [];
+
+if(age >= 45) reasons.push("Age above 45 increases heart disease risk");
+if(bmi >= 25) reasons.push("BMI indicates overweight");
+if(chol >= 240) reasons.push("High cholesterol level");
+if(glucose >= 126) reasons.push("Elevated blood sugar level");
+if(hba1c >= 6.5) reasons.push("Poor long-term glucose control");
+if(smoke === "Regular") reasons.push("Regular smoking damages blood vessels");
+if(diabetes === "Yes") reasons.push("Existing diabetes increases risk");
+if(hyper === "Yes") reasons.push("Hypertension history");
+if(stroke === "Yes") reasons.push("Previous stroke risk factor");
+if(sleep === "<6") reasons.push("Inadequate sleep duration");
+if(food === "High") reasons.push("High insulin resistant diet");
+
+let reasonList = document.getElementById("riskReason");
+reasonList.innerHTML="";
+
+reasons.forEach(r=>{
+reasonList.innerHTML += `<li>${r}</li>`;
+});
+
+/* DIET PLAN */
+
+let diet = document.getElementById("dietPlan");
+
+if(prob >= 70){
+
+diet.innerText =
+"Morning: Warm water + oats + flax seeds\n"+
+"Breakfast: Fruits + boiled eggs / protein\n"+
+"Lunch: Brown rice or millets + vegetables + dal\n"+
+"Snack: Nuts / buttermilk\n"+
+"Dinner: Soup + salad\n"+
+"Lifestyle: 45 minutes brisk walking daily";
+
+}
+else if(prob >= 40){
+
+diet.innerText =
+"Morning: Fruits + nuts\n"+
+"Lunch: Balanced home meal\n"+
+"Dinner: Light vegetables + whole grains\n"+
+"Lifestyle: 30 minutes exercise daily";
+
+}
+else{
+
+diet.innerText =
+"Maintain balanced diet with fruits, vegetables, whole grains and regular physical activity.";
+
+}
+
+document.getElementById("result").style.display="block";
+
+}catch(err){
+
+alert("Prediction server not reachable");
+
+}
+
+}
+
+
+</script>
+</body>
+</html>

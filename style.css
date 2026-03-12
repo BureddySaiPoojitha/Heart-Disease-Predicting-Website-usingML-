@@ -1,0 +1,175 @@
+/* RESET & BASE */
+*{
+  box-sizing:border-box;
+  font-family:'Segoe UI',sans-serif;
+}
+
+body{
+  margin:0;
+  background:#fff6ee;
+  color:#333;
+}
+
+/* NAVBAR */
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  padding:15px 40px;
+  background:#fff;
+  box-shadow:0 4px 10px rgba(0,0,0,.05);
+}
+
+.logo{
+  font-weight:700;
+  font-size:22px;
+  color:#ff8c42;
+}
+
+/* HERO */
+.hero{
+  text-align:center;
+  padding:clamp(40px, 8vw, 80px);
+}
+
+.hero h1{
+  font-size:clamp(26px, 5vw, 42px);
+}
+
+.hero span{
+  color:#ff8c42;
+}
+
+/* BUTTONS */
+button{
+  padding:12px 26px;
+  border:none;
+  border-radius:30px;
+  background:#ff944d;
+  color:#fff;
+  font-size:16px;
+  cursor:pointer;
+}
+
+button:hover{
+  opacity:.9;
+}
+
+.primary{
+  margin-top:25px;
+}
+
+/* CENTERED LOGIN */
+.center{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+}
+
+/* AUTH CARD */
+.auth-card{
+  background:#fff;
+  padding:clamp(25px, 5vw, 40px);
+  border-radius:20px;
+  width:90%;
+  max-width:320px;
+  box-shadow:0 10px 30px rgba(0,0,0,.1);
+  text-align:center;
+}
+
+.auth-card input{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border-radius:12px;
+  border:1px solid #ddd;
+  font-size:16px;
+}
+
+/* SECTION */
+.section{
+  max-width:900px;
+  margin:40px auto;
+  background:#fff;
+  padding:clamp(20px, 5vw, 40px);
+  border-radius:20px;
+}
+
+/* FORM GRID */
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+
+.full{
+  grid-column:1 / 3;
+}
+
+/* RESULT */
+.result{
+  display:none;
+  margin-top:30px;
+}
+
+.badge{
+  padding:6px 16px;
+  border-radius:20px;
+  color:#fff;
+  font-weight:600;
+}
+
+/* DASHBOARD */
+.dashboard{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:20px;
+  padding:clamp(30px, 6vw, 60px);
+}
+
+.card{
+  background:#fff;
+  padding:30px;
+  border-radius:18px;
+  box-shadow:0 10px 20px rgba(0,0,0,.08);
+  cursor:pointer;
+  transition:transform .2s ease;
+}
+
+.card:hover{
+  transform:translateY(-4px);
+}
+
+/* GLOBAL RESPONSIVENESS */
+img,
+input,
+select,
+button{
+  max-width:100%;
+  min-height:44px;      /* mobile touch standard */
+  font-size:16px;       /* prevents iOS zoom */
+}
+
+/* MOBILE BREAKPOINT */
+@media (max-width:768px){
+
+  nav{
+    padding:15px 20px;
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .full{
+    grid-column:1 / 2;
+  }
+
+  .dashboard{
+    padding:30px 20px;
+  }
+
+}
