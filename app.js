@@ -53,7 +53,7 @@ glucose: g
 
 try{
 
-let response = await fetch("http://127.0.0.1:5000/predict",{
+let response = await fetch("fetch("https://heart-disease-predicting-website-usingml.onrender.com/predict",{",{
 method:"POST",
 headers:{
 "Content-Type":"application/json"
